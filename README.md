@@ -1,6 +1,4 @@
-Here is the complete **raw `README.md` markdown code** (ready to copy-paste into GitHub):
 
-```md
 # 🛰️ SCRAP: Satellite Collision Risk Assessment and Prediction
 
 ## 🚀 Overview
@@ -217,6 +215,3 @@ jupyter notebook notebooks/SCRAP_Satellite_Collision_Risk_Assessment_and_Predict
 * Mirna Embaby
 
 
-
-If you'd like, I can also give you a **more minimal, recruiter-optimized README** that looks stronger on GitHub profile.
-```
