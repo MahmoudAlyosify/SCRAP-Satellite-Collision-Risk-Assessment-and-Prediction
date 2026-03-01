@@ -134,10 +134,6 @@ SHAP (SHapley Additive exPlanations) analysis confirmed the importance of physic
 
 ```
 
-├── data/
-│   ├── raw/
-│   └── processed/
-│
 ├── notebooks/
 │   └── SCRAP_Satellite_Collision_Risk_Assessment_and_Prediction.ipynb
 │
@@ -145,7 +141,6 @@ SHAP (SHapley Additive exPlanations) analysis confirmed the importance of physic
 │   ├── proposal.pdf
 │   └── final_report.pdf
 │
-├── src/
 ├── requirements.txt
 └── README.md
 
