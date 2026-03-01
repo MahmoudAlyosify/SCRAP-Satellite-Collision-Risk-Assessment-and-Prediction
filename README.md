@@ -87,17 +87,11 @@ This stabilizes variance across multiple orders of magnitude.
 
 ### 4️⃣ Custom Compound Loss Metric
 
-Standard MSE is inadequate for highly imbalanced collision risk prediction.
+Custom Evaluation Metric: Standard MSE is inadequate for this highly imbalanced problem. The project optimizes a Custom Compound Loss Metric:
 
-Custom loss:
+$$L = \frac{1}{F_2} \times MSE_{(r \ge 10^{-6})}$$
 
-L = (1 / F2) × MSE (r ≥ 1e-6)
-
-Where:
-
-- F2 score weights **Recall twice as much as Precision**
-- False Negatives (missed collisions) are heavily penalized
-- Error magnitude for high-risk predictions is minimized
+This explicitly assigns twice the weight to Recall over Precision ($F_2$-score), severely penalizing False Negatives (missed collisions), while minimizing error magnitude for high-risk predictions.
 
 ---
 
