@@ -1,106 +1,222 @@
-🛰️ SCRAP: Satellite Collision Risk Assessment and Prediction
+Here is the complete **raw `README.md` markdown code** (ready to copy-paste into GitHub):
 
-🚀 Overview
+```md
+# 🛰️ SCRAP: Satellite Collision Risk Assessment and Prediction
 
-The exponential proliferation of space debris in Low Earth Orbit (LEO) has transformed collision avoidance into a critical daily operation. Current physics-based collision probability models often suffer from extreme false-positive rates due to dynamic orbital propagation uncertainties, leading to unnecessary and inefficient maneuver planning.
+## 🚀 Overview
 
-SCRAP (Satellite Collision Risk Assessment and Prediction) is a supervised machine learning framework designed to predict the final collision risk estimate of an encounter. Crucially, the system enforces a strict operational constraint: predictions are made using only telemetry data available at least two days prior to the Time of Closest Approach (TCA).
+The exponential growth of space debris in Low Earth Orbit (LEO) has made collision avoidance a critical operational challenge. Traditional physics-based collision probability models often generate extremely high false-positive rates due to orbital propagation uncertainties, leading to unnecessary and costly satellite maneuvers.
 
-📊 Dataset
+**SCRAP (Satellite Collision Risk Assessment and Prediction)** is a supervised machine learning framework that predicts the final collision risk estimate of a satellite encounter.
 
-This project utilizes the European Space Agency's (ESA) Historical Conjunction Data Messages (CDMs) Database.
+> ⚠️ Operational Constraint:  
+All predictions are made using **only telemetry data available at least 2 days before the Time of Closest Approach (TCA)** — preventing data leakage and simulating real-world operational decision-making.
 
-Size: 162,634 individual CDM records corresponding to 13,154 unique close-approach events.
+---
 
-Features: 103 numerical features encompassing:
+## 📊 Dataset
 
-Kinematics: Relative position and velocity vectors.
+This project utilizes the European Space Agency (ESA) Historical Conjunction Data Messages (CDMs) Database.
 
-Uncertainty Matrices: 3D tracking radar covariance matrices.
+- **Size:** 162,634 CDM records  
+- **Events:** 13,154 unique close-approach events  
+- **Features:** 103 numerical features  
 
-Space Weather Indices: Solar radio flux (F10.7), Geomagnetic index (AP), and Wolf sunspot number (SSN).
+### Feature Categories
 
-Challenges: Extreme class imbalance. Over 98% of events possess a final risk value below the critical safety threshold ($10^{-6}$).
+- **Kinematics**
+  - Relative position vectors
+  - Relative velocity vectors  
 
-⚙️ Methodology & Pipeline
+- **Uncertainty Matrices**
+  - 3D radar covariance matrices  
 
-Operational Filtration (2-Day Cutoff): To simulate a realistic operational environment and avoid data leakage, all data occurring less than 2.0 days before TCA is dropped.
+- **Space Weather Indices**
+  - F10.7 Solar Radio Flux  
+  - AP Geomagnetic Index  
+  - Wolf Sunspot Number (SSN)
 
-Time-Series Flattening: Variable-length time series are aggregated into fixed-length tabular inputs by calculating statistics like Last, Mean, Std, and Delta (Trend) for dynamic features.
+### Key Challenge
 
-Physics-Informed Feature Engineering:
+⚠️ **Extreme Class Imbalance**
 
-Mahalanobis Distance ($D_M$): Normalizes spatial separation by the covariance matrix, measuring the distance relative to the radar's uncertainty ellipsoid.
+- Over **98%** of events have final risk < `1e-6`
+- Very few high-risk collision events
 
-Target Log-Transformation: The target risk variable is transformed into log-space ($y = \log_{10}(r + \epsilon)$) to stabilize variance across multiple orders of magnitude.
+---
 
-Custom Evaluation Metric: Standard MSE is inadequate for this highly imbalanced problem. The project optimizes a Custom Compound Loss Metric:
+## ⚙️ Methodology & Pipeline
 
-$$L = \frac{1}{F_2} \times MSE_{(r \ge 10^{-6})}$$
+### 1️⃣ Operational Filtration (2-Day Cutoff)
 
-This explicitly assigns twice the weight to Recall over Precision ($F_2$-score), severely penalizing False Negatives (missed collisions), while minimizing error magnitude for high-risk predictions.
+All observations occurring less than **2.0 days before TCA** are removed to:
 
-🧠 Machine Learning Models
+- Prevent data leakage  
+- Simulate real operational constraints  
 
-Three models were benchmarked for this regression/classification hybrid task:
+---
 
-Random Forest Regressor: Robust baseline for comparison.
+### 2️⃣ Time-Series Flattening
 
-LightGBM: Computationally efficient leaf-wise gradient boosting.
+Variable-length CDM sequences are converted into fixed-length tabular features using:
 
-XGBoost: Extreme gradient boosting utilizing the scale_pos_weight parameter to heavily penalize false negatives.
+- `Last`
+- `Mean`
+- `Standard Deviation`
+- `Delta (Trend)`
 
-🏆 Key Results
+---
 
-Gradient boosting algorithms significantly outperformed traditional analytical baseline methods.
+### 3️⃣ Physics-Informed Feature Engineering
 
-Best Model: XGBoost achieved the best overall performance with the lowest Compound Loss (0.224).
+#### 🔹 Mahalanobis Distance ($D_M$)
 
-High-Risk Recall: XGBoost successfully correctly identified 98% of high-risk events, reducing the critical false-negative rate to just 2%.
+Normalizes spatial separation using the covariance matrix:
 
-Model Interpretability: SHAP (SHapley Additive exPlanations) analysis validated the importance of physics-informed feature engineering. The most influential predictive features were:
+D_M = sqrt((x - μ)^T Σ⁻¹ (x - μ))
 
-Latest physics-based risk estimate
+Measures relative distance inside the radar uncertainty ellipsoid.
 
-Mahalanobis Distance
+---
 
-F10.7 Solar Flux (Space Weather)
+#### 🔹 Log-Transformation of Target
 
-Covariance Standard Deviation
+y = log10(r + ε)
 
-📁 Repository Structure
+This stabilizes variance across multiple orders of magnitude.
 
-├── data/                   # Raw and processed datasets (ESA CDMs)
-├── notebooks/              # Jupyter notebooks for EDA and modeling
+---
+
+### 4️⃣ Custom Compound Loss Metric
+
+Standard MSE is inadequate for highly imbalanced collision risk prediction.
+
+Custom loss:
+
+L = (1 / F2) × MSE (r ≥ 1e-6)
+
+Where:
+
+- F2 score weights **Recall twice as much as Precision**
+- False Negatives (missed collisions) are heavily penalized
+- Error magnitude for high-risk predictions is minimized
+
+---
+
+## 🧠 Machine Learning Models
+
+| Model | Description |
+|-------|------------|
+| Random Forest | Strong baseline ensemble method |
+| LightGBM | Efficient leaf-wise gradient boosting |
+| XGBoost | Extreme gradient boosting with `scale_pos_weight` |
+
+---
+
+## 🏆 Key Results
+
+### ✅ Best Model: XGBoost
+
+- **Lowest Compound Loss:** `0.224`
+- **High-Risk Recall:** `98%`
+- **False-Negative Rate:** `2%`
+
+Gradient boosting significantly outperformed traditional analytical baseline methods.
+
+---
+
+## 🔎 Model Interpretability
+
+SHAP (SHapley Additive exPlanations) analysis confirmed the importance of physics-informed features.
+
+### Most Influential Features
+
+1. Latest physics-based risk estimate  
+2. Mahalanobis Distance  
+3. F10.7 Solar Flux  
+4. Covariance Standard Deviation  
+
+---
+
+## 📁 Repository Structure
+
+```
+
+├── data/
+│   ├── raw/
+│   └── processed/
+│
+├── notebooks/
 │   └── SCRAP_Satellite_Collision_Risk_Assessment_and_Prediction.ipynb
-├── reports/                # Project proposal and final reports (PDF/LaTeX)
-├── README.md               # Project documentation
-└── requirements.txt        # Python dependencies
+│
+├── reports/
+│   ├── proposal.pdf
+│   └── final_report.pdf
+│
+├── src/
+├── requirements.txt
+└── README.md
 
+````
 
-🛠️ How to Run
+---
 
-Clone the repository:
+## 🛠️ Installation & Usage
 
-git clone [https://github.com/your-username/SCRAP-Collision-Prediction.git](https://github.com/your-username/SCRAP-Collision-Prediction.git)
+### 1️⃣ Clone the repository
 
+```bash
+git clone https://github.com/your-username/SCRAP-Collision-Prediction.git
+cd SCRAP-Collision-Prediction
+````
 
-Install the required dependencies:
+### 2️⃣ Install dependencies
 
+```bash
 pip install -r requirements.txt
+```
 
+### 3️⃣ Run the notebook
 
-Open the Jupyter Notebook to run the pipeline:
-
+```bash
 jupyter notebook notebooks/SCRAP_Satellite_Collision_Risk_Assessment_and_Prediction.ipynb
+```
+
+---
+
+## 🧪 Tech Stack
+
+* Python 3.10+
+* NumPy
+* Pandas
+* Scikit-learn
+* XGBoost
+* LightGBM
+* SHAP
+* Matplotlib
+* Seaborn
+* Jupyter Notebook
+
+---
+
+## 📌 Future Work
+
+* Real-time streaming collision risk prediction
+* Temporal deep learning models (LSTM / Transformer)
+* Integration with operational satellite maneuver planning systems
+* Deployment as an API service
+
+---
+
+## 👥 Authors
+
+**Queen’s University – CSAI 801 (Winter 2026)**
+
+* Mahmoud Alyosify
+* Mohamed Yahya
+* Mirna Embaby
 
 
-👥 Authors
 
-Queen's University (CSAI 801, Winter 2026)
-
-Mahmoud Alyosify
-
-Mohamed Yahya
-
-Mirna Embaby
+If you'd like, I can also give you a **more minimal, recruiter-optimized README** that looks stronger on GitHub profile.
+```
