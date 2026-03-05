@@ -10,7 +10,7 @@
   <img src="https://img.shields.io/badge/Status-Research%20Complete-brightgreen"/>
 </p>
 
-> **CSAI 801 — Applied Machine Learning · Group 14 · Queen's University · Winter 2026**  
+> **CSAI 801 Artificial Intel & Mach Learn · Group 14 · Queen's University · Winter 2026**  
 > Mohamed Yahya · Mirna Embaby · Mahmoud Alyosify
 
 ---
