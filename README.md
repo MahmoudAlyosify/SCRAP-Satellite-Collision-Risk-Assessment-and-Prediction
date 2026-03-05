@@ -53,8 +53,8 @@ Raw CDM Time-Series (variable length per event)
             ▼
 ┌───────────────────────────────────────────┐
 │         2-Day Operational Cutoff          │
-│   Drop all CDMs with time_to_tca < 2.0   │
-│   Target ← last CDM in full sequence     │
+│   Drop all CDMs with time_to_tca < 2.0    │
+│   Target ← last CDM in full sequence      │
 └───────────────────────────────────────────┘
             │
             ▼
@@ -81,7 +81,7 @@ Raw CDM Time-Series (variable length per event)
 │   STAGE 1: Sentinel (LightGBM Classifier) │
 │   Objective: Maximise F₂                  │
 │   Threshold: OOF-tuned (t* = 0.762)       │
-│   Output: p(r ≥ 10⁻⁶) per event          │
+│   Output: p(r ≥ 10⁻⁶) per event           │
 └───────────────────────────────────────────┘
        │                    │
     p ≥ t*               p < t*
@@ -100,14 +100,14 @@ Raw CDM Time-Series (variable length per event)
 ┌───────────────────────────────────────────┐
 │      Borderline Promotion Module          │
 │   If p ∈ [t*/2, t*) AND high uncertainty  │
-│   → promote prediction to -5.99          │
+│   → promote prediction to -5.99           │
 │   (Jump-regime victim protection)         │
 └───────────────────────────────────────────┘
             │
             ▼
 ┌───────────────────────────────────────────┐
 │        Global Bias Calibration            │
-│   OOF-tuned scalar shift on all preds    │
+│   OOF-tuned scalar shift on all preds     │
 └───────────────────────────────────────────┘
             │
             ▼
@@ -121,14 +121,14 @@ Raw CDM Time-Series (variable length per event)
 ```
 SCRAP/
 │
-├── SCRAP_FINAL_v10_fixed.ipynb   # ← Main notebook (full pipeline)
-├── Solution_1.ipynb              # Feature engineering exploration
-├── Solution_2.ipynb              # Optuna architecture exploration
+├── SCRAP_Satellite_Collision_Risk_Assessment_and_Prediction.ipynb   # ← Main notebook (full pipeline)
 │
 ├── data/
 │   └── (loaded automatically from HuggingFace — see Setup)
 │
-├── SCRAP_Final_Report.pdf        # Full project report
+├── reports/
+│   └── Project_Proposal__Satellite_Collision_Risk_Assessment_and_Prediction.pdf
+│   └── Project_Proposal__Satellite_Collision_Risk_Assessment_and_Prediction.pdf
 │
 └── README.md                     # This file
 ```
