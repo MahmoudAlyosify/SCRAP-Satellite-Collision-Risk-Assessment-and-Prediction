@@ -15,7 +15,7 @@
 
 ---
 
-## 📌 Overview
+## Overview
 
 **SCRAP** is a supervised machine learning framework for predicting the final satellite collision risk at the Time of Closest Approach (TCA), using **only telemetry data available at least 48 hours in advance** — the minimum operational lead time required for maneuver planning.
 
@@ -28,7 +28,7 @@ This decomposition mirrors the structure of the ESA official evaluation metric a
 
 ---
 
-## 🎯 Results at a Glance
+## Results at a Glance
 
 | Metric | Value |
 |---|---|
@@ -45,7 +45,7 @@ This decomposition mirrors the structure of the ESA official evaluation metric a
 
 ---
 
-## 🏗️ Architecture
+## Architecture
 
 ```
 Raw CDM Time-Series (variable length per event)
@@ -122,7 +122,7 @@ https://github.com/user-attachments/assets/8e383b17-3306-438d-b48f-6e6a33f082f7
 
 ---
 
-## 📂 Repository Structure
+## Repository Structure
 
 ```
 SCRAP/
@@ -141,7 +141,7 @@ SCRAP/
 
 ---
 
-## ⚙️ Setup & Installation
+## Setup & Installation
 
 ### Prerequisites
 
@@ -176,7 +176,7 @@ df_test  = ds['test'].to_pandas()
 
 ---
 
-## 🚀 Running the Notebook
+## Running the Notebook
 
 Open `SCRAP_FINAL_v10_fixed.ipynb` and run all cells in order. The notebook is fully self-contained and handles:
 
@@ -192,11 +192,11 @@ Open `SCRAP_FINAL_v10_fixed.ipynb` and run all cells in order. The notebook is f
 10. SHAP explainability analysis
 11. Jump-regime recall segmentation
 
-> ⚠️ **Expected runtime:** ~9 hours on a CUDA GPU (80 + 80 Optuna trials × 5-fold CV × 11,942 events × 1,208 features). Reduce `N_TRIALS` to 25 for faster experimentation.
+> **Expected runtime:** ~9 hours on a CUDA GPU (80 + 80 Optuna trials × 5-fold CV × 11,942 events × 1,208 features). Reduce `N_TRIALS` to 25 for faster experimentation.
 
 ---
 
-## 📊 Evaluation Metric
+## Evaluation Metric
 
 The official ESA competition loss:
 
@@ -215,7 +215,7 @@ This avoids the division instability of $L$ when $F_2 \approx 0$ and is bounded,
 
 ---
 
-## 🔬 Key Design Decisions
+## Key Design Decisions
 
 ### Why Two Stages?
 
@@ -249,7 +249,7 @@ A subset of high-risk events undergoes covariance updates in the final 48 hours 
 
 ---
 
-## 📈 Ablation Results
+## Ablation Results
 
 | Pipeline Stage | F₂ | Recall | FN |
 |---|---|---|---|
@@ -261,7 +261,7 @@ A subset of high-risk events undergoes covariance updates in the final 48 hours 
 
 ---
 
-## 🧠 SHAP Feature Importance (Top 5)
+## SHAP Feature Importance (Top 5)
 
 | Rank | Feature | Physical Meaning |
 |---|---|---|
@@ -273,7 +273,7 @@ A subset of high-risk events undergoes covariance updates in the final 48 hours 
 
 ---
 
-## ⚠️ Known Limitations
+## Known Limitations
 
 | Limitation | Explanation |
 |---|---|
@@ -284,7 +284,7 @@ A subset of high-risk events undergoes covariance updates in the final 48 hours 
 
 ---
 
-## 🔭 Future Work
+## Future Work
 
 - **Uncertainty quantification** via quantile regression or NGBoost to report prediction intervals on borderline events
 - **Transformer sequence modeling** on raw CDM streams to capture inter-CDM dynamics beyond single-step statistics
@@ -320,7 +320,7 @@ And the original ESA challenge dataset:
 
 ---
 
-## 📚 References
+## References
 
 1. ESA Space Debris Office. *Conjunction Surveillance and Collision Avoidance*. ESA Space Safety Programme, 2020.
 2. Chan, F. K. *Spacecraft Collision Probability*. The Aerospace Press, 2008.
