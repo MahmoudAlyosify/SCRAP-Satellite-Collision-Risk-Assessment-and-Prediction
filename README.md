@@ -1,5 +1,7 @@
 # SCRAP — Satellite Collision Risk Assessment and Prediction
-
+<p align="center">
+  <img width="320" alt="SCRAP Logo" src="https://github.com/user-attachments/assets/6b50b44f-1df5-44e9-9dc5-6f918e45df18" />
+</p>
 <p align="center">
   <img src="https://img.shields.io/badge/Python-3.10%2B-blue?logo=python&logoColor=white"/>
   <img src="https://img.shields.io/badge/XGBoost-2.x-orange?logo=xgboost"/>
@@ -16,6 +18,7 @@
 ---
 
 ## Overview
+
 
 **SCRAP** is a supervised machine learning framework for predicting the final satellite collision risk at the Time of Closest Approach (TCA), using **only telemetry data available at least 48 hours in advance** — the minimum operational lead time required for maneuver planning.
 
